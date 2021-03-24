@@ -1,0 +1,1 @@
+worker: python sxc-pc-bot.py
