@@ -5,6 +5,7 @@ import discord as dc
 import os
 import nest_asyncio
 
+
 # Crawler class for getting the job data
 class SXCPCCrawler:
 
@@ -45,6 +46,7 @@ client = dc.Client()  # Discord object
 
 nest_asyncio.apply()
 
+
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -53,15 +55,16 @@ async def on_message(message):
     msg = message.content
     args = msg.strip().split()
     argc = len(args)
-    
+
     if msg.startswith('?sxcpc'):
         if argc == 1:
             # Only 1 option - just print latest 10 job post name
 
             postlist = crawler.crawl()
             count = min(10, len(postlist))
-            
-            embed = dc.Embed(title=f'__**Latest {count} Job Post Results:**__', color=0x03f8fc)
+
+            embed = dc.Embed(title=f'__**Latest {count} Job Post Results:**__',
+                             color=0x03f8fc)
             for post in postlist[:count]:
                 embed.add_field(
                     name='\u200b',
@@ -76,7 +79,9 @@ async def on_message(message):
             if (args[1].isnumeric()):
                 postlist = crawler.crawl()
                 count = min(int(args[1]), len(postlist))
-                embed = dc.Embed(title=f'__**Latest {count} Job Post Results:**__', color=0x03f8fc)
+                embed = dc.Embed(
+                    title=f'__**Latest {count} Job Post Results:**__',
+                    color=0x03f8fc)
                 for post in postlist[:count]:
                     embed.add_field(
                         name='\u200b',
@@ -87,37 +92,51 @@ async def on_message(message):
             elif (args[1] == 'h'):
                 # Display help
                 embed = dc.Embed(title=f'__**Usage:**__', color=0x03f8fc)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc**: Displays latest 10 job post.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc [m]**: Displays latest \'m\' job post.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc h**: Displays help.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc i**: Displays bot information.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc t [yyyy]**: Displays latest 10 job post of the provided year.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc t [yyyy] [mm]**: Displays latest 10 job post of the provided year and month.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc [m] t [yyyy]**: Displays latest \'m\' job post of the provided year.',
-                               inline=False)
-                embed.add_field(name='\u200b', 
-                               value='> **?sxcpc [m] t [yyyy] [mm]**: Displays latest \'m\' job post of the provided year and month.',
-                               inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value='> **?sxcpc**: Displays latest 10 job post.',
+                    inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value='> **?sxcpc [m]**: Displays latest \'m\' job post.',
+                    inline=False)
+                embed.add_field(name='\u200b',
+                                value='> **?sxcpc h**: Displays help.',
+                                inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value='> **?sxcpc i**: Displays bot information.',
+                    inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    '> **?sxcpc t [yyyy]**: Displays latest 10 job post of the provided year.',
+                    inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    '> **?sxcpc t [yyyy] [mm]**: Displays latest 10 job post of the provided year and month.',
+                    inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    '> **?sxcpc [m] t [yyyy]**: Displays latest \'m\' job post of the provided year.',
+                    inline=False)
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    '> **?sxcpc [m] t [yyyy] [mm]**: Displays latest \'m\' job post of the provided year and month.',
+                    inline=False)
                 await message.channel.send(embed=embed)
             elif (args[1] == 'i'):
                 # Display bot info
                 embed = dc.Embed(title=f'__**Bot Info:**__', color=0x03f8fc)
-                embed.add_field(name='\u200b',
-                               value='> **@developer**: thenocturnalguy\n> **@description**: A discord bot to display latest job post on https://sxcpc.blogspot.com\n> **@version**: v1.0.3\n> **@updated_at**: 24.03.2021')
-                
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    '> **@developer**: thenocturnalguy\n> **@description**: A discord bot to display latest job post on https://sxcpc.blogspot.com\n> **@version**: v1.0.3\n> **@updated_at**: 24.03.2021'
+                )
+
                 await message.channel.send(embed=embed)
             else:
                 await message.channel.send('Wrong count provided!')
@@ -131,7 +150,10 @@ async def on_message(message):
                     if (yr.isnumeric()):
                         postlist = crawler.crawl(yr + '/')
                         count = min(10, len(postlist))
-                        embed = dc.Embed(title=f'__**Latest {count} Job Post Results of {yr}:**__', color=0x03f8fc)
+                        embed = dc.Embed(
+                            title=
+                            f'__**Latest {count} Job Post Results of {yr}:**__',
+                            color=0x03f8fc)
                         for post in postlist[:count]:
                             embed.add_field(
                                 name='\u200b',
@@ -148,8 +170,10 @@ async def on_message(message):
                     if (yr.isnumeric() and mn.isnumeric()):
                         postlist = crawler.crawl(yr + '/', mn + '/')
                         count = min(10, len(postlist))
-                        embed = dc.Embed(title=f'__**Latest {count} Job Post Results of {mn}/{yr}:**__', 
-                                         color=0x03f8fc)
+                        embed = dc.Embed(
+                            title=
+                            f'__**Latest {count} Job Post Results of {mn}/{yr}:**__',
+                            color=0x03f8fc)
                         for post in postlist[:count]:
                             embed.add_field(
                                 name='\u200b',
@@ -171,8 +195,10 @@ async def on_message(message):
                         if (yr.isnumeric()):
                             postlist = crawler.crawl(yr + '/')
                             count = min(int(count), len(postlist))
-                            embed = dc.Embed(title=f'__**Latest {count} Job Post Results of {yr}:**__', 
-                                             color=0x03f8fc)
+                            embed = dc.Embed(
+                                title=
+                                f'__**Latest {count} Job Post Results of {yr}:**__',
+                                color=0x03f8fc)
                             for post in postlist[:count]:
                                 embed.add_field(
                                     name='\u200b',
@@ -189,8 +215,10 @@ async def on_message(message):
                         if (yr.isnumeric() and mn.isnumeric()):
                             postlist = crawler.crawl(yr + '/', mn + '/')
                             count = min(int(count), len(postlist))
-                            embed = dc.Embed(title=f'__**Latest {count} Job Post Results of {mn}/{yr}:**__', 
-                                             color=0x03f8fc)
+                            embed = dc.Embed(
+                                title=
+                                f'__**Latest {count} Job Post Results of {mn}/{yr}:**__',
+                                color=0x03f8fc)
                             for post in postlist[:count]:
                                 embed.add_field(
                                     name='\u200b',
@@ -209,6 +237,7 @@ async def on_message(message):
                 await message.channel.send('Wrong arguments provided!')
         else:
             await message.channel.send('Wrong arguments provided!')
+
 
 # Go live!
 client.run('ODIzOTQ3MDg5MjIxMzg2MjQw.YFoOhg.XZGf8gpTpn8HgfYuQIbJizTWOjU')
