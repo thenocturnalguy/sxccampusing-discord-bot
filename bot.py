@@ -29,10 +29,7 @@ async def help(ctx):
         description=
         "There are only a few easy commands to get started with this bot. ",
         color=color)
-    # embed.set_thumbnail(
-    #     url=
-    #     "https://previews.123rf.com/images/putracetol/putracetol1805/putracetol180504350/101452759-job-logo-icon-design.jpg"
-    # )
+   
     embed.add_field(name="?help", value="Displays help", inline=False)
     embed.add_field(name="?info",
                     value="Displays bot information",
@@ -58,7 +55,6 @@ async def help(ctx):
         name="?jobs [m] t [yyyy] [mm]",
         value="Displays latest 'm' job post of the provided year and month",
         inline=False)
-    # embed.set_footer(text="Thank you! Keep applying for jobs :)")
     await ctx.send(embed=embed)
 
 
@@ -87,7 +83,7 @@ async def info(ctx):
     embed.add_field(name="@version", value="v3.0.0", inline=True)
     embed.add_field(
         name="@github",
-        value="https://github.com/thenocturnalguy/sxcpc-discord-bot",
+        value="https://github.com/thenocturnalguy/sxccampusing-discord-bot",
         inline=True)
     embed.set_footer(text="Thank you! Keep applying for jobs. Best of luck :)")
     await ctx.send(embed=embed)
