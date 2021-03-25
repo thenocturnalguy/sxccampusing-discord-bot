@@ -1,1 +1,1 @@
-worker: python sxc-pc-bot.py
+worker: python bot.py
