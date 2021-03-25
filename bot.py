@@ -1,12 +1,8 @@
 # Importing required dependencies
 import discord as dc
-import os
 import nest_asyncio
 from lib.crawler import SXCPCCrawler
-from lib.keep_alive import keep_alive
 from discord.ext import commands as cmd
-from dotenv import load_dotenv
-
 
 crawler = SXCPCCrawler()  # Crawler object
 client = cmd.Bot(command_prefix='?')  # Discord object
@@ -16,12 +12,14 @@ color = 0x8785ff
 
 nest_asyncio.apply()
 
-# Change the status of the bot 
+
+# Change the status of the bot
 @client.event
 async def on_ready():
     await client.change_presence(activity=dc.Activity(
         type=dc.ActivityType.watching,
         name='Over SXC Placement Cell Blog! | Start By: ?help'))
+
 
 # Help command
 @client.command()
@@ -63,6 +61,7 @@ async def help(ctx):
     # embed.set_footer(text="Thank you! Keep applying for jobs :)")
     await ctx.send(embed=embed)
 
+
 # Info command
 @client.command()
 async def info(ctx):
@@ -72,8 +71,7 @@ async def info(ctx):
         url="https://sxcpc.blogspot.com",
         description=
         "A simple bot to display latest job posts from St.Xavier's College Placement Cell blog after scraping blog posts.",
-        color=color
-    )
+        color=color)
     embed.set_author(
         name="thenocturnalguy",
         url="https://thenocturnalguy.epizy.com",
@@ -94,161 +92,148 @@ async def info(ctx):
     embed.set_footer(text="Thank you! Keep applying for jobs. Best of luck :)")
     await ctx.send(embed=embed)
 
+
 # Job posts listing command
 @client.command()
 async def jobs(ctx, *, argsstr=''):
-	args = argsstr.strip().split()
-	argc = len(args)
-	
-	if (argc == 0):
-		
-		# Only 1 option - just print latest 10 job post name
-		# cmd: ?jobs
+    args = argsstr.strip().split()
+    argc = len(args)
 
-		postlist = crawler.crawl_archive()
-		count = min(10, len(postlist))
+    if (argc == 0):
 
-		embed = dc.Embed(title=f'***Latest {count} Job Post Results:***',
-		                 color=color)
-		for post in postlist[:count]:
-		    embed.add_field(
-		        name='\u200b',
-		        value=
-		        f'> ** {post[1]} **\n > ** [Go to Post]({post[0]}) **',
-		        inline=True)
+        # Only 1 option - just print latest 10 job post name
+        # cmd: ?jobs
 
-		await ctx.send(embed=embed)
-	
-	elif (argc == 1):
-		
-		# Only 1 option - just print latest 'm' job post name
-		# where m is the 2nd argument supplied
-		# cmd: ?jobs 15
+        postlist = crawler.crawl_archive()
+        count = min(10, len(postlist))
 
-		if (args[0].isnumeric()):
-		    postlist = crawler.crawl_archive()
-		    count = min(int(args[0]), len(postlist))
-		    embed = dc.Embed(
-		        title=f'***Latest {count} Job Post Results:***',
-		        color=color)
-		    for post in postlist[:count]:
-		        embed.add_field(
-		            name='\u200b',
-		            value=
-		            f'> ** {post[1]} **\n > ** [Go to Post]({post[0]}) **',
-		            inline=True)
-		    await ctx.send(embed=embed)
-		else:
-			ctx.send('Wrong count provided!')
-	
-	elif (argc == 2 and args[0] == 't'):
-		
-		# cmd: ?jobs t 2020
+        embed = dc.Embed(title=f'***Latest {count} Job Post Results:***',
+                         color=color)
+        for post in postlist[:count]:
+            embed.add_field(
+                name='\u200b',
+                value=f'> ** {post[1]} **\n > ** [Go to Post]({post[0]}) **',
+                inline=True)
 
-		yr = args[1]
-		if (yr.isnumeric()):
-		    postlist = crawler.crawl_archive(yr + '/')
-		    count = min(10, len(postlist))
-		    embed = dc.Embed(
-		        title=
-		        f'***Latest {count} Job Post Results of {yr}:***',
-		        color=color)
-		    for post in postlist[:count]:
-		        embed.add_field(
-		            name='\u200b',
-		            value=
-		            f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
-		            inline=True)
-		    await ctx.send(embed=embed)
-		else:
-			await ctx.send('Wrong year provided!')
-	
-	elif (argc == 3 and args[0] == 't'):
+        await ctx.send(embed=embed)
 
-		# cmd: ?jobs t 2020 09
+    elif (argc == 1):
 
-		yr = args[1]
-		mn = args[2]
+        # Only 1 option - just print latest 'm' job post name
+        # where m is the 2nd argument supplied
+        # cmd: ?jobs 15
 
-		if (yr.isnumeric() and mn.isnumeric()):
-		    postlist = crawler.crawl_archive(yr + '/', mn + '/')
-		    count = min(10, len(postlist))
-		    embed = dc.Embed(
-		        title=
-		        f'***Latest {count} Job Post Results of {mn}/{yr}:***',
-		        color=color)
-		    for post in postlist[:count]:
-		        embed.add_field(
-		            name='\u200b',
-		            value=
-		            f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
-		            inline=True)
-		    await ctx.send(embed=embed)
-		else:
-		    await ctx.send('Wrong year or month provided!')
+        if (args[0].isnumeric()):
+            postlist = crawler.crawl_archive()
+            count = min(int(args[0]), len(postlist))
+            embed = dc.Embed(title=f'***Latest {count} Job Post Results:***',
+                             color=color)
+            for post in postlist[:count]:
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    f'> ** {post[1]} **\n > ** [Go to Post]({post[0]}) **',
+                    inline=True)
+            await ctx.send(embed=embed)
+        else:
+            ctx.send('Wrong count provided!')
 
-	elif (argc == 3 and args[1] == 't'):
+    elif (argc == 2 and args[0] == 't'):
 
-		# cmd: ?jobs 15 t 2020
-		
-		count = args[0]
-		yr = args[2]
+        # cmd: ?jobs t 2020
 
-		if (not(count.isnumeric())):
-			await ctx.send('Wrong count provided!')
-		elif (not(yr.isnumeric())):
-			await ctx.send('Wrong year provided!')
-		else:
-			postlist = crawler.crawl_archive(yr + '/')
-			count = min(int(count), len(postlist))
-			embed = dc.Embed(
-			    title=
-			    f'***Latest {count} Job Post Results of {yr}:***',
-			    color=color)
-			for post in postlist[:count]:
-			    embed.add_field(
-			        name='\u200b',
-			        value=
-			        f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
-			        inline=True)
-			await ctx.send(embed=embed)
+        yr = args[1]
+        if (yr.isnumeric()):
+            postlist = crawler.crawl_archive(yr + '/')
+            count = min(10, len(postlist))
+            embed = dc.Embed(
+                title=f'***Latest {count} Job Post Results of {yr}:***',
+                color=color)
+            for post in postlist[:count]:
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
+                    inline=True)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send('Wrong year provided!')
 
-	elif (argc == 4 and args[1] == 't'):
+    elif (argc == 3 and args[0] == 't'):
 
-		# cmd: ?jobs 15 t 2020 09
+        # cmd: ?jobs t 2020 09
 
-		count = args[0]
-		yr = args[2]
-		mn = args[3]
+        yr = args[1]
+        mn = args[2]
 
-		if (not(count.isnumeric())):
-			await ctx.send('Wrong count provided!')
-		elif (not(yr.isnumeric())):
-			await ctx.send('Wrong year format provided!')
-		elif (not(yr.isnumeric())):
-			await ctx.send('Wrong month format provided!')
-		else:
-			postlist = crawler.crawl_archive(yr + '/', mn + '/')
-			count = min(int(count), len(postlist))
-			embed = dc.Embed(
-			    title=
-			    f'***Latest {count} Job Post Results of {mn}/{yr}:***',
-			    color=color)
-			for post in postlist[:count]:
-			    embed.add_field(
-			        name='\u200b',
-			        value=
-			        f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
-			        inline=True)
-			await ctx.send(embed=embed)
+        if (yr.isnumeric() and mn.isnumeric()):
+            postlist = crawler.crawl_archive(yr + '/', mn + '/')
+            count = min(10, len(postlist))
+            embed = dc.Embed(
+                title=f'***Latest {count} Job Post Results of {mn}/{yr}:***',
+                color=color)
+            for post in postlist[:count]:
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
+                    inline=True)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send('Wrong year or month provided!')
 
-	else:
-		await ctx.send('Wrong arguments provided!')
+    elif (argc == 3 and args[1] == 't'):
 
+        # cmd: ?jobs 15 t 2020
 
-# Keep alive!
-keep_alive()
+        count = args[0]
+        yr = args[2]
 
-# Go live!
-load_dotenv()
-client.run(os.getenv('TOKEN'))
+        if (not (count.isnumeric())):
+            await ctx.send('Wrong count provided!')
+        elif (not (yr.isnumeric())):
+            await ctx.send('Wrong year provided!')
+        else:
+            postlist = crawler.crawl_archive(yr + '/')
+            count = min(int(count), len(postlist))
+            embed = dc.Embed(
+                title=f'***Latest {count} Job Post Results of {yr}:***',
+                color=color)
+            for post in postlist[:count]:
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
+                    inline=True)
+            await ctx.send(embed=embed)
+
+    elif (argc == 4 and args[1] == 't'):
+
+        # cmd: ?jobs 15 t 2020 09
+
+        count = args[0]
+        yr = args[2]
+        mn = args[3]
+
+        if (not (count.isnumeric())):
+            await ctx.send('Wrong count provided!')
+        elif (not (yr.isnumeric())):
+            await ctx.send('Wrong year format provided!')
+        elif (not (yr.isnumeric())):
+            await ctx.send('Wrong month format provided!')
+        else:
+            postlist = crawler.crawl_archive(yr + '/', mn + '/')
+            count = min(int(count), len(postlist))
+            embed = dc.Embed(
+                title=f'***Latest {count} Job Post Results of {mn}/{yr}:***',
+                color=color)
+            for post in postlist[:count]:
+                embed.add_field(
+                    name='\u200b',
+                    value=
+                    f'> ** {post[1]} ** \n > ** [Go to Post]({post[0]}) **',
+                    inline=True)
+            await ctx.send(embed=embed)
+
+    else:
+        await ctx.send('Wrong arguments provided!')

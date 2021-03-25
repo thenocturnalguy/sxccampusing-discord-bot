@@ -22,7 +22,7 @@ class SXCPCCrawler:
 
         return page_html
 
-    # Method to extract the required info
+    # Method to extract the archives
     def crawl_archive(self, year='', month=''):
 
         page_html = self._get_page_content(year, month)
@@ -34,8 +34,7 @@ class SXCPCCrawler:
                     'class': 'posts'
                 }).findAll('a')]
 
-        return archive
-
+    # Method to extract a particular blog post          
     def crawl_post(self, year='', month='', page_name=''):
         page_html = self._get_page_content(year, month, page_name)
         full_post = page_html.find('div', {'class': 'blog-posts'})
