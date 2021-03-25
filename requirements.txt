@@ -12,3 +12,4 @@ soupsieve==2.0.1
 yarg==0.1.9
 yarl==1.6.3
 Flask==1.1.2
+python-dotenv==0.15.0
