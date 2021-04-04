@@ -1,5 +1,6 @@
 # sxccampusing-discord-bot
-A discord bot to display latest job posts scraped from https://sxcpc.blogspot.com in the discord chat.
+A discord bot build using Python, Discord.py and BeautifulSoup to display latest job posts scraped from https://sxcpc.blogspot.com in the discord chat.
+Invite Link: https://discord.com/api/oauth2/authorize?client_id=823947089221386240&permissions=0&scope=bot
 
 ## Commands:
 
