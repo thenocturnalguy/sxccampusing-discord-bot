@@ -12,7 +12,6 @@ color = 0x8785ff
 
 nest_asyncio.apply()
 
-
 # Change the status of the bot
 @client.event
 async def on_ready():

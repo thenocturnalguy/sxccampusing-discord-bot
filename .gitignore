@@ -1,1 +1,14 @@
+# Notebook
+SXCCampusing-Discord-Bot.ipynb
+
+# Procfile
+Procfile
+
+# Notebook checkpoints
+.ipynb_checkpoints
+
+# Pycache
+__pycache__
+
+# Environment variable
 .env
