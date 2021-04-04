@@ -1,4 +1,4 @@
-# sxcpc-discord-bot
+# sxccampusing-discord-bot
 A discord bot to display latest job posts scraped from https://sxcpc.blogspot.com in the discord chat.
 
 ## Commands:
